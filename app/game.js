@@ -9,7 +9,7 @@ class Player {
         this._ties = 0;
         this._losses = 0;
     }
-    
+
     set playerNum(playerNum) {
         this._playerNum = playerNum;
     }
@@ -23,7 +23,7 @@ class Player {
         this._name = name;
     }
     */
-    
+
     get name() {
         return this._name;
     }
@@ -43,11 +43,11 @@ class Player {
     get wins() {
         return this._wins;
     }
-    
+
     set ties(ties) {
         this._ties = ties;
     }
-    
+
     get ties() {
         return this._ties;
     }
@@ -81,7 +81,7 @@ class BoardSpot {
         this._row = row;
     }
     */
-    
+
     get row() {
         return this._row;
     }
@@ -91,7 +91,7 @@ class BoardSpot {
         this._col = col;
     }
     */
-    
+
     get col() {
         return this._col;
     }
@@ -203,51 +203,69 @@ class TicTacToeGame {
         this._players = [];
         this._numGames = 0;
         this._maxPlayerTotal = maxPlayerTotal;
+        this._minPlayerTotal = 2;
         this._totalNumPlayers = 0;
         this._nextPlayerNumInit = 0;
-        this._currentPlayerNum = 0;
-        this._nextPlayerNum = 1;
+        // this._currentPlayerNum = 0;
+        // this._nextPlayerNum = 1;
         this._winner = undefined;
         this._board = new GameBoard(totalRows, maxPlayerTotal);
-        this._totalSpots = totalRows
+        this._totalSpots = totalRows * totalRows;
+        this._numSpotsTaken = 0;
     }
     
+    // set minPlayerTotal(minPlayerTotal) {
+    //     this._minPlayerTotal = minPlayerTotal;
+    // }   
+    
+    get minPlayerTotal() {
+        return this._minPlayerTotal;
+    }
+
+    set numSpotsTaken(numSpotsTaken) {
+        this._numSpotsTaken = numSpotsTaken;
+    }
+
+    get numSpotsTaken() {
+        return this._numSpotsTaken;
+    }
+
     set totalSpots(totalSpots) {
         this._totalSpots = totalSpots;
     }
-    
+
     get totalSpots() {
         return this._totalSpots;
     }
-    
+
     set board(board) {
         this._board = board;
     }
-    
+
     get board() {
         return this._board;
     }
-    
+
     set winner(winner) {
         this._winner = winner;
     }
-    
+
     get winner() {
         return this._winner;
     }
-    
+
     set maxPlayerTotal(maxPlayerTotal) {
         this._maxPlayerTotal = maxPlayerTotal;
     }
-    
+
     get maxPlayerTotal() {
         return this._maxPlayerTotal;
     }
-    
+
     set nextPlayerNumInit(nextPlayerNumInit) {
         this._nextPlayerNumInit = nextPlayerNumInit;
     }
-    
+
     get nextPlayerNumInit() {
         return this._nextPlayerNumInit;
     }
@@ -260,26 +278,26 @@ class TicTacToeGame {
         return this._totalNumPlayers;
     }
 
-    set currentPlayerNum(currentPlayerNum) {
-        this._currentPlayerNum = currentPlayerNum;
-    }
-
-    get currentPlayerNum() {
-        return this._currentPlayerNum;
-    }
-    
-    set nextPlayerNum(nextPlayerNum) {
-        this._nextPlayerNum = nextPlayerNum;
-    }
-    
-    get nextPlayerNum() {
-        return this._nextPlayerNum;
-    }
+    //     set currentPlayerNum(currentPlayerNum) {
+    //         this._currentPlayerNum = currentPlayerNum;
+    //     }
+    // 
+    //     get currentPlayerNum() {
+    //         return this._currentPlayerNum;
+    //     }
+    //     
+    //     set nextPlayerNum(nextPlayerNum) {
+    //         this._nextPlayerNum = nextPlayerNum;
+    //     }
+    //     
+    //     get nextPlayerNum() {
+    //         return this._nextPlayerNum;
+    //     }
     
     set numGames(numGames) {
         this._numGames = numGames;
     }
-    
+
     get numGames() {
         return this._numGames;
     }
@@ -289,60 +307,66 @@ class TicTacToeGame {
         this._players = players
     }
     */
-    
+
     get players() {
         return this._players;
     }
 
     addPlayer(name, symbol) {
-        if(this._totalNumPlayers === this._maxPlayerTotal) {
-            
+        if (this._totalNumPlayers === this._maxPlayerTotal) {
+
             return "Max number of players reached";
         }
         else {
             this._players[this._nextPlayerNumInit] = new Player(name, this._nextPlayerNumInit, symbol);
             this._totalNumPlayers++;
             this._nextPlayerNumInit++;
-            
+
             return "Player " + name + " (" + symbol + ") " + "was added.";
         }
     }
-    
+
     getPlayer(playerNum) {
         return this._players[playerNum];
     }
 
     makeMove(playerNum, row, col) {
-        var boardSpot = this._board.getBoardSpot(row, col);
-        
-        if(boardSpot.player === undefined) {
-            this._board.setBoardSpot(this._players[playerNum], row, col);
-            
-            return "Player " + this._players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").";
+        if ((this._numSpotsTaken === this._totalSpots) && this._winner === undefined) {
+            return "All spots are taken. The game is tied."
         }
-        else {      
-            return "Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + boardSpot.player.name;
+        else {
+            var boardSpot = this._board.getBoardSpot(row, col);
+
+            if (boardSpot.player === undefined) {
+                this._board.setBoardSpot(this._players[playerNum], row, col);
+                this._numSpotsTaken++;
+
+                return "Player " + this._players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").";
+            }
+            else {
+                return "Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + boardSpot.player.name;
+            }
         }
     }
 
     checkWin(playerNum, row, col) {
         var player = this._board[playerNum];
-        
+
         return (this._board.rowCompletion(player, row, col) && this._board.colCompletion(player, row, col) && this._board.diagonalCompletion(player));
     }
-    
+
     addPlayerWin(playerNum) {
         this._players[playerNum].wins++;
     }
-    
+
     addPlayerLoss(playerNum) {
         this._players[playerNum].losses++;
     }
-    
+
     addPlayerTie(playerNum) {
         this._players[playerNum].ties++;
     }
-    
+
     reset() {
         this._winner == undefined;
         this._board.resetBoard();
