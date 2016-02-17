@@ -331,28 +331,24 @@ class TicTacToeGame {
     }
 
     makeMove(playerNum, row, col) {
-        if ((this._numSpotsTaken === this._totalSpots) && this._winner === undefined) {
-            return "All spots are taken. The game is tied."
+        var boardSpot = this._board.getBoardSpot(row, col);
+
+        if (boardSpot.player === undefined) {
+            this._board.setBoardSpot(this._players[playerNum], row, col);
+            this._numSpotsTaken++;
+
+            return true;
         }
         else {
-            var boardSpot = this._board.getBoardSpot(row, col);
-
-            if (boardSpot.player === undefined) {
-                this._board.setBoardSpot(this._players[playerNum], row, col);
-                this._numSpotsTaken++;
-
-                return "Player " + this._players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").";
-            }
-            else {
-                return "Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + boardSpot.player.name;
-            }
+            return false;
         }
+
     }
 
     checkWin(playerNum, row, col) {
         var player = this._board[playerNum];
 
-        return (this._board.rowCompletion(player, row, col) && this._board.colCompletion(player, row, col) && this._board.diagonalCompletion(player));
+        return (this._board.rowCompletion(player, row, col) || this._board.colCompletion(player, row, col) || this._board.diagonalCompletion(player));
     }
 
     addPlayerWin(playerNum) {
@@ -365,6 +361,22 @@ class TicTacToeGame {
 
     addPlayerTie(playerNum) {
         this._players[playerNum].ties++;
+    }
+
+    addWinAndLosses(playerNum) {
+        this.addPlayerWin(playerNum);
+
+        for (var i = 0; i < this._players.length; i++) {
+            if (this._players[i].playerNum !== playerNum) {
+                this._players[i].losses++;
+            }
+        }
+    }
+
+    addTies() {
+        for (var i = 0; i < this._players.length; i++) {
+            this._player[i].ties++;
+        }
     }
 
     reset() {
