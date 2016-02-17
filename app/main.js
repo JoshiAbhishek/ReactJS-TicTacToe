@@ -38,7 +38,7 @@ var addPlayer = function (name) {
         
     }
     else {
-        console.log("Controller supports up to 2 players currently... quitting");
+        alert("Controller supports up to 2 players currently... quitting");
         
         _quit();
     }
@@ -67,13 +67,13 @@ var startGame = function () {
 
 var makeMove = function (playerNum, row, col) {
     if(currentPlayerNum !== playerNum) {
-        console.log("Unexpected error... current player number does not equal player number... quitting");
+        alert("Unexpected error... current player number does not equal player number... quitting");
         
         _quit();
     }    
     
     if ((gameModel.numSpotsTaken === gameModel.totalSpots) && gameModel.winner === undefined) {
-        console.log("All spots are taken. The game is tied.");
+        alert("All spots are taken. The game is tied.");
         
         gameModel.addTies();
         
@@ -81,13 +81,13 @@ var makeMove = function (playerNum, row, col) {
         
     }
     else if((gameModel.numSpotsTaken === gameModel.totalSpots) && gameModel.winner !== undefined) {
-        console.log("Unexpected error... quitting");
+        alert("Unexpected error... quitting");
         
         _quit();
     }
     else {
         if (gameModel.makeMove(playerNum, row, col)) {
-            console.log("Player " + gameModel.players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").");
+            alert("Player " + gameModel.players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").");
         
             if (gameModel.checkWin(playerNum, row, col)) {
                 gameModel.winner = playerNum;
@@ -112,21 +112,19 @@ var makeMove = function (playerNum, row, col) {
             }
         }
         else {
-            //
-            
-            console.log("Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + gameModel.getBoardSpot(row, col).player.name);
+            alert("Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + gameModel.getBoardSpot(row, col).player.name);
         }
     }
 };
 
 var newGame = function () {
-    //    
+    alert("Resetting the board for a new game.");    
     
     _reset();
 };
 
 var exit = function () {
-    //
+    alert("Exiting the game.");
 
     _quit();
 };
