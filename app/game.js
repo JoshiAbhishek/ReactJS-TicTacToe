@@ -5,24 +5,33 @@ class Player {
         this._name = name;
         this._playerNum = playerNum;
         this._symbol = symbol;
+        this._wins = 0;
+        this._ties = 0;
+        this._losses = 0;
+    }
+    
+    set playerNum(playerNum) {
+        this._playerNum = playerNum;
     }
 
     get playerNum() {
         return this._playerNum;
     }
+    
     /*
     set name(name) {
         this._name = name;
     }
     */
+    
     get name() {
         return this._name;
     }
-    /*
+
     set symbol(symbol) {
         this._symbol = symbol;
     }
-    */
+
     get symbol() {
         return this._symbol;
     }
@@ -34,13 +43,21 @@ class Player {
     get wins() {
         return this._wins;
     }
-
-    set loses(loses) {
-        this._loses = loses;
+    
+    set ties(ties) {
+        this._ties = ties;
+    }
+    
+    get ties() {
+        return this._ties;
     }
 
-    get loses() {
-        return this._loses;
+    set losses(losses) {
+        this._losses = losses;
+    }
+
+    get losses() {
+        return this._losses;
     }
 }
 
@@ -58,26 +75,30 @@ class BoardSpot {
     get player() {
         return this._player;
     }
+    
     /*
     set row(row) {
         this._row = row;
     }
     */
+    
     get row() {
         return this._row;
     }
+    
     /*
     set col(col) {
         this._col = col;
     }
     */
+    
     get col() {
         return this._col;
     }
 }
 
 class GameBoard {
-    constructor(numRows) {
+    constructor(numRows, totalNumPlayers) {
         this._board = [];
         this._numRows = numRows;
 
@@ -100,8 +121,8 @@ class GameBoard {
     }
 
     resetBoard() {
-        for (var i = 0; i < numRows; i++) {
-            for (var j = 0; j < numRows; j++) {
+        for (var i = 0; i < this._numRows; i++) {
+            for (var j = 0; j < this._numRows; j++) {
                 this._board[i][j].player = undefined;
                 this._board[i][j] = undefined;
                 this.board[i][j] = new BoardSpot(undefined, i, j);
@@ -118,16 +139,16 @@ class GameBoard {
     }
 
     rowCompletion(player, row, col) {
-        var j = numRows - 1;
-        for (var i = 0; i < numRows; i++) {
+        var j = this._numRows - 1;
+        for (var i = 0; i < this._numRows; i++) {
             if (col !== i) {
-                if (this._board[row][i].player.symbol !== player.symbol) {
+                if (this._board[row][i].player.playerNum !== player.playerNum) {
                     return false;
                 }
                 if (i === j) {
                     break;
                 }
-                if (this._board[row][j].player.symbol !== player.symbol) {
+                if (this._board[row][j].player.playerNum !== player.playerNum) {
                     return false;
                 }
             }
@@ -138,16 +159,16 @@ class GameBoard {
     }
 
     colCompletion(player, row, col) {
-        var j = numRows - 1;
-        for (var i = 0; i < numRows; i++) {
+        var j = this._numRows - 1;
+        for (var i = 0; i < this._numRows; i++) {
             if (col !== i) {
-                if (this._board[i][col].player.symbol !== player.symbol) {
+                if (this._board[i][col].player.playerNum !== player.playerNum) {
                     return false;
                 }
                 if (i === j) {
                     break;
                 }
-                if (this._board[j][col].player.symbol !== player.symbol) {
+                if (this._board[j][col].player.playerNum !== player.playerNum) {
                     return false;
                 }
             }
@@ -158,51 +179,172 @@ class GameBoard {
     }
 
     diagonalCompletion(player) {
-        /*
-        for(var i = 0; i < numRows; i += (numRows + 1)) {
-            if() {
+        for (var i = 0; i < this._numRows; i++) {
+            if (this._board[i][i].player.playerNum !== player.playerNum) {
                 return false;
             }
         }
-        
-        for(var j = (numRows - 1); j < numRows; j += (numRows - 1)) {
-            if() {
+
+        var k = this._numRows - 1;
+        for (var j = 0; j < this._numRows; j++) {
+            if (this._board[k][j].player.playerNum !== player.playerNum) {
                 return false;
             }
-        }
-        
-        return true;
-        */
-        
-        for(var i = 0; i < numRows; i++) {
-            if(this._board[i][i].player.symbol !== player.symbol) {
-                return false;
-            }
-        }
-        
-        var k = numRows - 1;
-        for(var j = 0; j < numRows; j++) {
-            if(this._board[k][j].player.symbol !== player.symbol) {
-                return false;
-            }
-            
+
             k--;
         }
-        
+
         return true;
     }
 }
 
 class TicTacToeGame {
-    constructor() {
-
+    constructor(totalRows, maxPlayerTotal) {
+        this._players = [];
+        this._numGames = 0;
+        this._maxPlayerTotal = maxPlayerTotal;
+        this._totalNumPlayers = 0;
+        this._nextPlayerNumInit = 0;
+        this._currentPlayerNum = 0;
+        this._nextPlayerNum = 1;
+        this._winner = undefined;
+        this._board = new GameBoard(totalRows, maxPlayerTotal);
+        this._totalSpots = totalRows
+    }
+    
+    set totalSpots(totalSpots) {
+        this._totalSpots = totalSpots;
+    }
+    
+    get totalSpots() {
+        return this._totalSpots;
+    }
+    
+    set board(board) {
+        this._board = board;
+    }
+    
+    get board() {
+        return this._board;
+    }
+    
+    set winner(winner) {
+        this._winner = winner;
+    }
+    
+    get winner() {
+        return this._winner;
+    }
+    
+    set maxPlayerTotal(maxPlayerTotal) {
+        this._maxPlayerTotal = maxPlayerTotal;
+    }
+    
+    get maxPlayerTotal() {
+        return this._maxPlayerTotal;
+    }
+    
+    set nextPlayerNumInit(nextPlayerNumInit) {
+        this._nextPlayerNumInit = nextPlayerNumInit;
+    }
+    
+    get nextPlayerNumInit() {
+        return this._nextPlayerNumInit;
     }
 
-    makeMove() {
-
+    set totalNumPlayers(totalNumPlayers) {
+        this._totalNumPlayers = totalNumPlayers;
     }
 
-    isWon() {
+    get totalNumPlayers() {
+        return this._totalNumPlayers;
+    }
 
+    set currentPlayerNum(currentPlayerNum) {
+        this._currentPlayerNum = currentPlayerNum;
+    }
+
+    get currentPlayerNum() {
+        return this._currentPlayerNum;
+    }
+    
+    set nextPlayerNum(nextPlayerNum) {
+        this._nextPlayerNum = nextPlayerNum;
+    }
+    
+    get nextPlayerNum() {
+        return this._nextPlayerNum;
+    }
+    
+    set numGames(numGames) {
+        this._numGames = numGames;
+    }
+    
+    get numGames() {
+        return this._numGames;
+    }
+    
+    /*
+    set players(players) {
+        this._players = players
+    }
+    */
+    
+    get players() {
+        return this._players;
+    }
+
+    addPlayer(name, symbol) {
+        if(this._totalNumPlayers === this._maxPlayerTotal) {
+            
+            return "Max number of players reached";
+        }
+        else {
+            this._players[this._nextPlayerNumInit] = new Player(name, this._nextPlayerNumInit, symbol);
+            this._totalNumPlayers++;
+            this._nextPlayerNumInit++;
+            
+            return "Player " + name + " (" + symbol + ") " + "was added.";
+        }
+    }
+    
+    getPlayer(playerNum) {
+        return this._players[playerNum];
+    }
+
+    makeMove(playerNum, row, col) {
+        var boardSpot = this._board.getBoardSpot(row, col);
+        
+        if(boardSpot.player === undefined) {
+            this._board.setBoardSpot(this._players[playerNum], row, col);
+            
+            return "Player " + this._players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").";
+        }
+        else {      
+            return "Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + boardSpot.player.name;
+        }
+    }
+
+    checkWin(playerNum, row, col) {
+        var player = this._board[playerNum];
+        
+        return (this._board.rowCompletion(player, row, col) && this._board.colCompletion(player, row, col) && this._board.diagonalCompletion(player));
+    }
+    
+    addPlayerWin(playerNum) {
+        this._players[playerNum].wins++;
+    }
+    
+    addPlayerLoss(playerNum) {
+        this._players[playerNum].losses++;
+    }
+    
+    addPlayerTie(playerNum) {
+        this._players[playerNum].ties++;
+    }
+    
+    reset() {
+        this._winner == undefined;
+        this._board.resetBoard();
     }
 }
