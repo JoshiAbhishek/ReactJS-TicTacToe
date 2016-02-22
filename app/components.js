@@ -32,7 +32,7 @@ var SetBoardPage = React.createClass({
         }
 
         Controller.init(boardSize); 
-        update();       
+        //update();       
     },
 
     render: function () {
@@ -66,7 +66,7 @@ var PlayerRegistrationPage = React.createClass({
 
         Controller.addPlayer(name);
         this.setState({ name: '' });
-        update();
+        //update();
     },
 
     render: function () {
@@ -121,8 +121,8 @@ var PlayerBox = React.createClass({
 
 
 var BoardSpot = React.createClass({
-    click: function (playerNum, row, col) {
-        this.props.spotClick(playerNum, row, col);
+    click: function () {        
+        this.props.spotClick(this.props.row, this.props.col);
     },
 
     render: function () {
@@ -144,17 +144,16 @@ var BoardSpot = React.createClass({
             playerN = player.playerNum;
         }
         else {
-            symbol = " ";
+            symbol = "empty";
             playerN = undefined;
         }
-
 
         if (Controller.getWinner() !== undefined) {
             isDisabled = true;
         }
 
         return (
-            <button style={buttonStyle} playerNum={ playerN } onclick= { this.click } disabled= { isDisabled? true : false}> { symbol } < /button>
+            <button style={buttonStyle} playerNum={ playerN } onclick= { this.click } disabled= {isDisabled}> { symbol } < /button>
     );
     }
 });
@@ -176,12 +175,16 @@ var InfoBox = React.createClass({
 });
 
 var GameBoard = React.createClass({
-    spotclick: function (playerNum, row, col) {
-        Controller.makeMove(playerNum, row, col);
+    spotClick: function (row, col) {
+        alert("Clicked Spot");
+        console.log("clicked spot " + row + " , " + col);
+        
+        Controller.makeMove(Controller.getCurrentPlayerNum(), row, col);
     },
 
     render: function () {
         var rows = [];
+        var headCols = [];
 
         for (var i = 0; i < Controller.getBoardRows(); i++) {
             var cols = [];
@@ -189,7 +192,7 @@ var GameBoard = React.createClass({
             for (var j = 0; j < Controller.getBoardRows(); j++) {
                 cols.push(
                     <td>
-                    <BoardSpot row={ i } col= { j } onclick= { this.spotClick } />
+                    <BoardSpot row={ i } col= { j } spotClick = { this.spotClick} />
                     </td>
                     );
             }
@@ -197,11 +200,16 @@ var GameBoard = React.createClass({
             rows.push(<tr>{ cols } < /tr>);
         }
         
-        
+        for(var i = 0; i < rows.length; i++) {
+            headCols.push(<th></th>);
+        }
 
         return (
-
+            <table>
+            <thead><tr>{headCols}</tr></thead>
             <tbody>{rows}< /tbody>
+            </table>
+            
 
             );
     }

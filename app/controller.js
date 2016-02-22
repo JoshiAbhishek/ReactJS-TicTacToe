@@ -1,5 +1,8 @@
 'use strict';
+var React = require('react');
+var ReactDOM = require('react-dom');
 var Game = require('./game.js');
+var Components = require('./components.js');
 
 class Controller {
     constructor() {
@@ -28,6 +31,8 @@ class Controller {
         this._gameModel.currentPlayerNum = 0;
         this._gameModel.nextPlayerNum = 1;
         this._initialized = true;
+        
+        update();
     }
 
     addPlayer(name) {
@@ -57,6 +62,12 @@ class Controller {
 
             this._quit();
         }
+        
+        update();
+    }
+    
+    getCurrentPlayerNum() {
+        return this._gameModel.currentPlayerNum;
     }
     
     getBoardRows() {
@@ -118,6 +129,8 @@ class Controller {
         
             //
         }
+        
+        update();
     }
 
     makeMove(playerNum, row, col) {
@@ -170,12 +183,15 @@ class Controller {
                 alert("Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + this._gameModel.getBoardSpot(row, col).player.name);
             }
         }
+        
+        update();
     }
 
     newGame() {
         alert("Resetting the board for a new game.");
 
         this._reset();
+        update();
     }
 
     exit() {
@@ -193,6 +209,10 @@ class Controller {
         this._gameModel.reset();
     }
 
+}
+
+function update() {
+    ReactDOM.render(<Components.FullGame />, document.getElementById('content'));
 }
 
 module.exports.Controller = Controller;
