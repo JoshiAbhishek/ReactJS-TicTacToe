@@ -16,13 +16,11 @@ class Player {
 
     get playerNum() {
         return this._playerNum;
-    }
+    }   
     
-    /*
     set name(name) {
         this._name = name;
     }
-    */
 
     get name() {
         return this._name;
@@ -206,12 +204,21 @@ class TicTacToeGame {
         this._minPlayerTotal = 2;
         this._totalNumPlayers = 0;
         this._nextPlayerNumInit = 0;
-        // this._currentPlayerNum = 0;
-        // this._nextPlayerNum = 1;
+        this._currentPlayerNum = 0;
+        this._nextPlayerNum = 1;
+        this._lastGameStarter = 0;
         this._winner = undefined;
         this._board = new GameBoard(totalRows, maxPlayerTotal);
         this._totalSpots = totalRows * totalRows;
         this._numSpotsTaken = 0;
+    }
+    
+    set lastGameStarter(lastGameStarter) {
+        this._lastGameStarter = lastGameStarter;
+    }
+    
+    get lastGameStarter() {
+        return this._lastGameStarter;
     }
     
     // set minPlayerTotal(minPlayerTotal) {
@@ -278,22 +285,22 @@ class TicTacToeGame {
         return this._totalNumPlayers;
     }
 
-    //     set currentPlayerNum(currentPlayerNum) {
-    //         this._currentPlayerNum = currentPlayerNum;
-    //     }
-    // 
-    //     get currentPlayerNum() {
-    //         return this._currentPlayerNum;
-    //     }
-    //     
-    //     set nextPlayerNum(nextPlayerNum) {
-    //         this._nextPlayerNum = nextPlayerNum;
-    //     }
-    //     
-    //     get nextPlayerNum() {
-    //         return this._nextPlayerNum;
-    //     }
-    
+    set currentPlayerNum(currentPlayerNum) {
+        this._currentPlayerNum = currentPlayerNum;
+    }
+
+    get currentPlayerNum() {
+        return this._currentPlayerNum;
+    }
+
+    set nextPlayerNum(nextPlayerNum) {
+        this._nextPlayerNum = nextPlayerNum;
+    }
+
+    get nextPlayerNum() {
+        return this._nextPlayerNum;
+    }
+
     set numGames(numGames) {
         this._numGames = numGames;
     }
@@ -315,14 +322,14 @@ class TicTacToeGame {
     addPlayer(name, symbol) {
         if (this._totalNumPlayers === this._maxPlayerTotal) {
 
-            return "Max number of players reached";
+            return false;
         }
         else {
             this._players[this._nextPlayerNumInit] = new Player(name, this._nextPlayerNumInit, symbol);
             this._totalNumPlayers++;
             this._nextPlayerNumInit++;
 
-            return "Player " + name + " (" + symbol + ") " + "was added.";
+            return true;
         }
     }
 
@@ -378,9 +385,15 @@ class TicTacToeGame {
             this._player[i].ties++;
         }
     }
+    
+    getBoardSpot(row, col) {
+        return this._board.getBoardSpot(row, col);
+    }
 
     reset() {
         this._winner == undefined;
         this._board.resetBoard();
     }
 }
+
+module.exports.TicTacToeGame = TicTacToeGame;

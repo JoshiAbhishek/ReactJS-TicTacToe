@@ -1,3 +1,7 @@
+body {
+    text-align: center !important;
+}
+
 /** all buttons are the same size **/
 /*button {
   width: 80px;
