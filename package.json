@@ -8,8 +8,8 @@
     "build": "webpack",
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
     },
-  "author": "YOUR NAME HERE",
-  "repository" : {"type":"git", "url":"YOUR REPO CLONE URL HERE"},
+  "author": "Abhishek Joshi",
+  "repository" : {"type":"git", "url":"https://github.com/JoshiAbhishek/ReactJS-TicTacToe.git"},
   "license": "ISC",
   "dependencies": {
     "babel-loader": "^6.2.1",
