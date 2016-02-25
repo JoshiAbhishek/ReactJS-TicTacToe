@@ -153,6 +153,9 @@ var BoardSpot = React.createClass({
         if (Controller.getWinner() !== undefined) {
             isDisabled = true;
         }
+        else {
+            isDisabled = false;
+        }
 
         return (
             <button style={buttonStyle} playerNum={ playerN } onClick= { this.click } disabled= {isDisabled}> { symbol } < /button>
@@ -215,21 +218,24 @@ var GameBoard = React.createClass({
     }
 });
 
-var ControlButtons = React.createClass({
-    handleClick() {
-        if(this.props.id === "newGame") {
-            Controller.newGame();
-        }
-        else {
-            Controller.exit();
-        }
+var ControlButton = React.createClass({
+    click() {
+        Controller.handleControlButton(this.props.buttonID);
     },
-        
+    
+    render: function() {
+        return(
+            <button onClick={this.click}>{this.props.text}</button>
+        );
+    }
+});
+
+var ControlButtons = React.createClass({
     render: function() {
         return (
             <div>
-                <button id="exit" onClick={this.handleClick}>Exit</button>
-                <button id="newGame" onClick={this.handleClick}>New Game</button>
+                <ControlButton text="Exit" buttonID="exit" />
+                <ControlButton text="New Game" buttonID="newGame"/>
             </div>
         );
     }

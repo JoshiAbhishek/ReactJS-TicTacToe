@@ -193,6 +193,15 @@ class Controller {
         update();
     }
 
+    handleControlButton(buttonID) {
+        if(buttonID === "newGame") {
+            this.newGame();
+        }
+        else {
+            this.exit();
+        }
+    }
+
     newGame() {
         alert("Resetting the board for a new game.");
 

@@ -399,7 +399,7 @@ class TicTacToeGame {
     }
 
     reset() {
-        this._winner == undefined;
+        this._winner = undefined;
         this._numSpotsTaken = 0;
         this._board.resetBoard();
     }
