@@ -1,0 +1,28 @@
+body {
+    text-align: center !important;
+    
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/** all buttons are the same size **/
+button {
+  color: darkred;
+  background-color: white !important;
+  border-color: darkblue;
+  border-width: .25em;
+  border-style: solid;
+  border-radius: .5em;
+  margin: .25em;
+  
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/** make buttons bigger font **/
+/*.btn-group-lg>.btn, .btn-lg, .btn {
+  font-size: 30px;
+}*/

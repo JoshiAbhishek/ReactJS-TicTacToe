@@ -1,0 +1,23 @@
+{
+  "name": "react-tac-toe",
+  "version": "1.0.0",
+  "description": "A Tic-Tac-Toe game made with React.js",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
+    },
+  "author": "YOUR NAME HERE",
+  "repository" : {"type":"git", "url":"YOUR REPO CLONE URL HERE"},
+  "license": "ISC",
+  "dependencies": {
+    "babel-loader": "^6.2.1",
+    "babel-preset-react": "^6.3.13",
+    "babelify": "^7.2.0",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
