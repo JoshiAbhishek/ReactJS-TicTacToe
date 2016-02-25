@@ -122,7 +122,12 @@ var PlayerBox = React.createClass({
 
 var BoardSpot = React.createClass({
     click: function () {        
-        this.props.spotClick(this.props.row, this.props.col);
+        alert("Clicked Spot");
+        console.log("clicked spot " + this.props.row + " , " + this.props.col);
+        
+        Controller.makeMove(this.props.row, this.props.col);
+        
+        //this.props.spotClick(this.props.row, this.props.col);
     },
 
     render: function () {
@@ -153,7 +158,7 @@ var BoardSpot = React.createClass({
         }
 
         return (
-            <button style={buttonStyle} playerNum={ playerN } onclick= { this.click } disabled= {isDisabled}> { symbol } < /button>
+            <button style={buttonStyle} playerNum={ playerN } onClick= { this.click } disabled= {isDisabled}> { symbol } < /button>
     );
     }
 });
@@ -192,12 +197,12 @@ var GameBoard = React.createClass({
             for (var j = 0; j < Controller.getBoardRows(); j++) {
                 cols.push(
                     <td>
-                    <BoardSpot row={ i } col= { j } spotClick = { this.spotClick} />
+                    <BoardSpot row={i} col= {j} spotClick = { this.spotClick} />
                     </td>
                     );
             }
 
-            rows.push(<tr>{ cols } < /tr>);
+            rows.push(<tr>{ cols }< /tr>);
         }
         
         for(var i = 0; i < rows.length; i++) {

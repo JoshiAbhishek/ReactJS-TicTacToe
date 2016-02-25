@@ -16,8 +16,8 @@ class Player {
 
     get playerNum() {
         return this._playerNum;
-    }   
-    
+    }
+
     set name(name) {
         this._name = name;
     }
@@ -136,56 +136,56 @@ class GameBoard {
         return this._board[row][col]
     }
 
-    rowCompletion(player, row, col) {
-        var j = this._numRows - 1;
+    rowCompletion(passedPlayer, row, col) {
+        //var j = this._numRows - 1;
         for (var i = 0; i < this._numRows; i++) {
             if (col !== i) {
-                if (this._board[row][i].player.playerNum !== player.playerNum) {
+                if (this._board[row][i].player === undefined || this._board[row][i].player.playerNum !== passedPlayer.playerNum) {
                     return false;
                 }
-                if (i === j) {
-                    break;
-                }
-                if (this._board[row][j].player.playerNum !== player.playerNum) {
-                    return false;
-                }
+                // if (i === j) {
+                //     break;
+                // }
+                // if (this._board[row][j].player === undefined || this._board[row][j].player.playerNum !== passedPlayer.playerNum) {
+                //     return false;
+                // }
             }
-            j--;
+            //j--;
         }
 
         return true;
     }
 
-    colCompletion(player, row, col) {
-        var j = this._numRows - 1;
+    colCompletion(passedPlayer, row, col) {
+        //var j = this._numRows - 1;
         for (var i = 0; i < this._numRows; i++) {
-            if (col !== i) {
-                if (this._board[i][col].player.playerNum !== player.playerNum) {
-                    return false;
-                }
-                if (i === j) {
-                    break;
-                }
-                if (this._board[j][col].player.playerNum !== player.playerNum) {
-                    return false;
-                }
+            //if (col !== i) {
+            if (this._board[i][col].player === undefined || this._board[i][col].player.playerNum !== passedPlayer.playerNum) {
+                return false;
             }
-            j--;
+            // if (i === j) {
+            //     break;
+            // }
+            // if (this._board[j][col].player === undefined || this._board[j][col].player.playerNum !== passedPlayer.playerNum) {
+            //     return false;
+            // }
+            //}
+            //j--;
         }
 
         return true;
     }
 
-    diagonalCompletion(player) {
+    diagonalCompletion(passedPlayer) {
         for (var i = 0; i < this._numRows; i++) {
-            if (this._board[i][i].player.playerNum !== player.playerNum) {
+            if (this._board[i][i].player === undefined || this._board[i][i].player.playerNum !== passedPlayer.playerNum) {
                 return false;
             }
         }
 
         var k = this._numRows - 1;
         for (var j = 0; j < this._numRows; j++) {
-            if (this._board[k][j].player.playerNum !== player.playerNum) {
+            if (this._board[k][j].player === undefined || this._board[k][j].player.playerNum !== passedPlayer.playerNum) {
                 return false;
             }
 
@@ -212,11 +212,11 @@ class TicTacToeGame {
         this._totalSpots = totalRows * totalRows;
         this._numSpotsTaken = 0;
     }
-    
+
     set lastGameStarter(lastGameStarter) {
         this._lastGameStarter = lastGameStarter;
     }
-    
+
     get lastGameStarter() {
         return this._lastGameStarter;
     }
@@ -353,7 +353,7 @@ class TicTacToeGame {
     }
 
     checkWin(playerNum, row, col) {
-        var player = this._board[playerNum];
+        var player = this._players[playerNum];
 
         return (this._board.rowCompletion(player, row, col) || this._board.colCompletion(player, row, col) || this._board.diagonalCompletion(player));
     }
@@ -385,7 +385,7 @@ class TicTacToeGame {
             this._player[i].ties++;
         }
     }
-    
+
     getBoardSpot(row, col) {
         return this._board.getBoardSpot(row, col);
     }

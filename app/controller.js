@@ -133,12 +133,16 @@ class Controller {
         update();
     }
 
-    makeMove(playerNum, row, col) {
+    makeMove(row, col) {
+        var playerNum = this._gameModel.currentPlayerNum;
+        
+        /*
         if (this._gameModel.currentPlayerNum !== playerNum) {
             alert("Unexpected error... current player number does not equal player number... quitting");
 
             this._quit();
         }
+        */
 
         if ((this._gameModel.numSpotsTaken === this._gameModel.totalSpots) && this._gameModel.winner === undefined) {
             alert("All spots are taken. The game is tied.");
@@ -156,6 +160,7 @@ class Controller {
         else {
             if (this._gameModel.makeMove(playerNum, row, col)) {
                 alert("Player " + this._gameModel.players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").");
+                console.log("Player " + this._gameModel.players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").");
 
                 if (this._gameModel.checkWin(playerNum, row, col)) {
                     this._gameModel.winner = playerNum;
@@ -163,17 +168,16 @@ class Controller {
                     this._gameModel.addWinAndLosses(playerNum);
                     this._gameModel.numGames++;
                 
-                    //
-                
+                    alert("Player " + this._gameModel.players[playerNum].name + " won!!");
                 }
                 else {
                     if (playerNum == 0) {
                         this._gameModel.currentPlayerNum = 1;
-                        this._gameModel.nextPlayerNum = 1;
+                        this._gameModel.nextPlayerNum = 0;
                     }
                     else {
-                        this._gameModel.currentPlayerNum = 1;
-                        this._gameModel.nextPlayerNum = 0;
+                        this._gameModel.currentPlayerNum = 0;
+                        this._gameModel.nextPlayerNum = 1;
                     }
                 
                     //
