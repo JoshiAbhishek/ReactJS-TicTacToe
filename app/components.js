@@ -122,12 +122,9 @@ var PlayerBox = React.createClass({
 
 var BoardSpot = React.createClass({
     click: function () {        
-        alert("Clicked Spot");
         console.log("clicked spot " + this.props.row + " , " + this.props.col);
         
         Controller.makeMove(this.props.row, this.props.col);
-        
-        //this.props.spotClick(this.props.row, this.props.col);
     },
 
     render: function () {
@@ -213,20 +210,48 @@ var GameBoard = React.createClass({
             <table>
             <thead><tr>{headCols}</tr></thead>
             <tbody>{rows}< /tbody>
-            </table>
-            
-
+            </table>           
             );
+    }
+});
+
+var ControlButtons = React.createClass({
+    handleClick() {
+        if(this.props.id === "newGame") {
+            Controller.newGame();
+        }
+        else {
+            Controller.exit();
+        }
+    },
+        
+    render: function() {
+        return (
+            <div>
+                <button id="exit" onClick={this.handleClick}>Exit</button>
+                <button id="newGame" onClick={this.handleClick}>New Game</button>
+            </div>
+        );
     }
 });
 
 var GamePage = React.createClass({
     render: function () {
+        var buttons;        
+        
+        if (Controller.getWinner() !== undefined) {
+            buttons = <ControlButtons />;
+        }
+        else {
+            buttons = <div></div>;
+        }
+        
         return (
             <div>
             <InfoBox />
             < PlayerBox />
             <GameBoard />
+            {buttons}
             < /div>
             );
     }

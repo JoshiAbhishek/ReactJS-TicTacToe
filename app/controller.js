@@ -121,10 +121,12 @@ class Controller {
             if (this._gameModel.lastGameStarter === 0) {
                 this._gameModel.currentPlayerNum = 1;
                 this._gameModel.nextPlayerNum = 0;
+                this._gameModel.lastGameStarter = 1;
             }
             else {
                 this._gameModel.currentPlayerNum = 0;
                 this._gameModel.nextPlayerNum = 1;
+                this._gameModel.lastGameStarter = 0;
             }
         
             //
@@ -195,6 +197,8 @@ class Controller {
         alert("Resetting the board for a new game.");
 
         this._reset();
+        this.startGame();
+        
         update();
     }
 
@@ -202,11 +206,15 @@ class Controller {
         alert("Exiting the game.");
 
         this._quit();
+        update();
     }
 
-    _quit() {
+    _quit() {        
         this._reset();
+        
+        this._gameModel = undefined;
         this._canStartGame = false;
+        this._initialized = false;
     }
 
     _reset() {

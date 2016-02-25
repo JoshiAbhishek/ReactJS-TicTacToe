@@ -123,7 +123,7 @@ class GameBoard {
             for (var j = 0; j < this._numRows; j++) {
                 this._board[i][j].player = undefined;
                 this._board[i][j] = undefined;
-                this.board[i][j] = new BoardSpot(undefined, i, j);
+                this._board[i][j] = new BoardSpot(undefined, i, j);
             }
         }
     }
@@ -177,12 +177,20 @@ class GameBoard {
     }
 
     diagonalCompletion(passedPlayer) {
+        return (this.diagonalComplU2D(passedPlayer) || this.diagonalComplD2U(passedPlayer));
+    }
+    
+    diagonalComplU2D(passedPlayer) {
         for (var i = 0; i < this._numRows; i++) {
             if (this._board[i][i].player === undefined || this._board[i][i].player.playerNum !== passedPlayer.playerNum) {
                 return false;
             }
         }
-
+        
+        return true;
+    }
+    
+    diagonalComplD2U(passedPlayer) {
         var k = this._numRows - 1;
         for (var j = 0; j < this._numRows; j++) {
             if (this._board[k][j].player === undefined || this._board[k][j].player.playerNum !== passedPlayer.playerNum) {
@@ -191,7 +199,7 @@ class GameBoard {
 
             k--;
         }
-
+        
         return true;
     }
 }
@@ -392,6 +400,7 @@ class TicTacToeGame {
 
     reset() {
         this._winner == undefined;
+        this._numSpotsTaken = 0;
         this._board.resetBoard();
     }
 }
