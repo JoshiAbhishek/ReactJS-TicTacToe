@@ -386,12 +386,16 @@ class TicTacToeGame {
                 this._players[i].losses++;
             }
         }
+        
+        this._numGames++;
     }
 
     addTies() {
         for (var i = 0; i < this._players.length; i++) {
-            this._player[i].ties++;
+            this._players[i].ties++;
         }
+        
+        this._numGames++;
     }
 
     getBoardSpot(row, col) {
