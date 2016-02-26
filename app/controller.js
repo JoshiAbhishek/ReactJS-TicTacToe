@@ -9,6 +9,7 @@ class Controller {
         this._gameModel;
         this._canStartGame = false;
         this._initialized = false;
+        this._tied = false;
     }
     
     /*
@@ -16,6 +17,10 @@ class Controller {
         return this._gameModel();
     }
     */
+    
+    get tied() {
+        return this._tied;
+    }
     
     get initialized() {
         return this._initialized;
@@ -64,6 +69,10 @@ class Controller {
         }
         
         update();
+    }
+    
+    getLastGameStarter() {
+        return this._gameModel.getPlayer(this._gameModel.lastGameStarter).name;
     }
     
     getCurrentPlayerNum() {
@@ -137,14 +146,6 @@ class Controller {
 
     makeMove(row, col) {
         var playerNum = this._gameModel.currentPlayerNum;
-        
-        /*
-        if (this._gameModel.currentPlayerNum !== playerNum) {
-            alert("Unexpected error... current player number does not equal player number... quitting");
-
-            this._quit();
-        }
-        */
 
         if ((this._gameModel.numSpotsTaken === this._gameModel.totalSpots) && this._gameModel.winner === undefined) {
             alert("All spots are taken. The game is tied.");
@@ -168,7 +169,6 @@ class Controller {
                     this._gameModel.winner = playerNum;
 
                     this._gameModel.addWinAndLosses(playerNum);
-                    this._gameModel.numGames++;
                 
                     alert("Player " + this._gameModel.players[playerNum].name + " won!!");
                 }
@@ -188,6 +188,16 @@ class Controller {
             else {
                 alert("Board spot" + " (" + row + ", " + col + ") " + "is already occupied by " + this._gameModel.getBoardSpot(row, col).player.name);
             }
+        }
+        
+        update();
+        
+        if ((this._gameModel.numSpotsTaken === this._gameModel.totalSpots) && this._gameModel.winner === undefined) {
+            alert("All spots are taken. The game is tied.");
+
+            this._gameModel.addTies();
+        
+            this._tied = true;
         }
         
         update();
@@ -228,6 +238,7 @@ class Controller {
 
     _reset() {
         this._gameModel.reset();
+        this._tied = false;
     }
 
 }

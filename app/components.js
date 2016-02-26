@@ -13,7 +13,7 @@ var buttonStyle = {
 };
 
 var infoBoxStyle = {
-    color: "blue"  
+    color: "blue"
 };
 
 var SetBoardPage = React.createClass({
@@ -30,8 +30,14 @@ var SetBoardPage = React.createClass({
         if (!boardSize) {
             return;
         }
+        if(boardSize < 1 || boardSize >= 11) {
+            alert("Please choose a board size greater than one and less than 11");
+        }
+        else {
+            Controller.init(boardSize); 
+        }
 
-        Controller.init(boardSize); 
+        
         //update();       
     },
 
@@ -121,9 +127,9 @@ var PlayerBox = React.createClass({
 
 
 var BoardSpot = React.createClass({
-    click: function () {        
+    click: function () {
         console.log("clicked spot " + this.props.row + " , " + this.props.col);
-        
+
         Controller.makeMove(this.props.row, this.props.col);
     },
 
@@ -136,7 +142,7 @@ var BoardSpot = React.createClass({
 
         if (player !== undefined) {
             playerSymbol = player.symbol;
-            
+
             if (playerSymbol === "X") {
                 symbol = "X";
             } else if (playerSymbol === "O") {
@@ -150,7 +156,7 @@ var BoardSpot = React.createClass({
             playerN = undefined;
         }
 
-        if (Controller.getWinner() !== undefined) {
+        if (Controller.tied === true || Controller.getWinner() !== undefined) {
             isDisabled = true;
         }
         else {
@@ -158,7 +164,7 @@ var BoardSpot = React.createClass({
         }
 
         return (
-            <button style={buttonStyle} playerNum={ playerN } onClick= { this.click } disabled= {isDisabled}> { symbol } < /button>
+            <button style={ buttonStyle } playerNum= { playerN } onClick= { this.click } disabled= { isDisabled } > { symbol } < /button>
     );
     }
 });
@@ -167,8 +173,9 @@ var BoardSpot = React.createClass({
 var InfoBox = React.createClass({
     render: function () {
         return (
-            <div style={infoBoxStyle}>
+            <div style={ infoBoxStyle } >
             <h3>Total Games: { Controller.getTotalGames() } </h3>
+            < h3 > Last Game Starter: { Controller.getLastGameStarter() } </h3>
             < h3 > Current Player: { Controller.getCurrentPlayerName() } </h3>
             < h3 > Next Player: { Controller.getNextPlayerName() } </h3>
             < h3 > Total Players: { Controller.getTotalNumPlayers() } </h3>
@@ -183,7 +190,7 @@ var GameBoard = React.createClass({
     spotClick: function (row, col) {
         alert("Clicked Spot");
         console.log("clicked spot " + row + " , " + col);
-        
+
         Controller.makeMove(Controller.getCurrentPlayerNum(), row, col);
     },
 
@@ -197,23 +204,23 @@ var GameBoard = React.createClass({
             for (var j = 0; j < Controller.getBoardRows(); j++) {
                 cols.push(
                     <td>
-                    <BoardSpot row={i} col= {j} spotClick = { this.spotClick} />
+                    <BoardSpot row={ i } col= { j } spotClick = { this.spotClick } />
                     </td>
                     );
             }
 
-            rows.push(<tr>{ cols }< /tr>);
+            rows.push(<tr>{ cols } < /tr>);
         }
         
-        for(var i = 0; i < rows.length; i++) {
+        for (var i = 0; i < rows.length; i++) {
             headCols.push(<th></th>);
         }
 
         return (
             <table>
-            <thead><tr>{headCols}</tr></thead>
-            <tbody>{rows}< /tbody>
-            </table>           
+            <thead><tr>{ headCols } < /tr></thead >
+            <tbody>{ rows } < /tbody>
+            < /table>
             );
     }
 });
@@ -222,20 +229,20 @@ var ControlButton = React.createClass({
     click() {
         Controller.handleControlButton(this.props.buttonID);
     },
-    
-    render: function() {
-        return(
-            <button onClick={this.click}>{this.props.text}</button>
+
+    render: function () {
+        return (
+            <button onClick={ this.click } > { this.props.text } < /button>
         );
     }
 });
 
 var ControlButtons = React.createClass({
-    render: function() {
+    render: function () {
         return (
             <div>
-                <ControlButton text="Exit" buttonID="exit" />
-                <ControlButton text="New Game" buttonID="newGame"/>
+            <ControlButton text="Exit" buttonID= "exit" />
+            <ControlButton text="New Game" buttonID= "newGame" />
             </div>
         );
     }
@@ -243,22 +250,22 @@ var ControlButtons = React.createClass({
 
 var GamePage = React.createClass({
     render: function () {
-        var buttons;        
-        
-        if (Controller.getWinner() !== undefined) {
+        var buttons;
+
+        if (Controller.tied === true || Controller.getWinner() !== undefined) {
             buttons = <ControlButtons />;
         }
         else {
             buttons = <div></div>;
         }
-        
+
         return (
             <div>
             <InfoBox />
             < PlayerBox />
             <GameBoard />
-            {buttons}
-            < /div>
+            {buttons }
+        < /div>
             );
     }
 });
