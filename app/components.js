@@ -7,15 +7,18 @@ var Components = require('./components.js');
 var controll = require("./controller.js");
 var Controller = new controll.Controller();
 
+//Style for board buttons
 var buttonStyle = {
     height: '100px',
     width: '100px'
 };
 
+//Styles for the info box
 var infoBoxStyle = {
     color: "blue"
 };
 
+//Page for setting the board's number of rows and columns
 var SetBoardPage = React.createClass({
     getInitialState: function () {
         return { boardSize: '' };
@@ -55,6 +58,7 @@ var SetBoardPage = React.createClass({
     }
 });
 
+//Page for adding players by name
 var PlayerRegistrationPage = React.createClass({
     getInitialState: function () {
         return { name: '' };
@@ -89,7 +93,7 @@ var PlayerRegistrationPage = React.createClass({
     }
 });
 
-
+//The game title
 var Title = React.createClass({
     render: function () {
         return (
@@ -98,7 +102,7 @@ var Title = React.createClass({
     }
 });
 
-
+//A box with a player's stats and information
 var PlayerBox = React.createClass({
     render: function () {
         var playerBoxes = [];
@@ -125,7 +129,7 @@ var PlayerBox = React.createClass({
     }
 });
 
-
+//A spot on the game board
 var BoardSpot = React.createClass({
     click: function () {
         console.log("clicked spot " + this.props.row + " , " + this.props.col);
@@ -169,7 +173,7 @@ var BoardSpot = React.createClass({
     }
 });
 
-
+//An information box for the game's stats and details
 var InfoBox = React.createClass({
     render: function () {
         return (
@@ -186,6 +190,7 @@ var InfoBox = React.createClass({
     }
 });
 
+//The game board
 var GameBoard = React.createClass({
     spotClick: function (row, col) {
         alert("Clicked Spot");
@@ -225,6 +230,7 @@ var GameBoard = React.createClass({
     }
 });
 
+//A control button (New Game or Exit)
 var ControlButton = React.createClass({
     click() {
         Controller.handleControlButton(this.props.buttonID);
@@ -246,6 +252,7 @@ var ControlButton = React.createClass({
     }
 });
 
+//The game's control buttons
 var ControlButtons = React.createClass({
     render: function () {
         return (
@@ -257,6 +264,7 @@ var ControlButtons = React.createClass({
     }
 });
 
+//The game's page
 var GamePage = React.createClass({
     render: function () {
         var buttons;
@@ -281,6 +289,7 @@ var GamePage = React.createClass({
     }
 });
 
+//The full game display
 var FullGame = React.createClass({
     render: function () {
         var display;
@@ -305,6 +314,7 @@ var FullGame = React.createClass({
     }
 });
 
+//Update the view
 function update() {
     ReactDOM.render(<Components.FullGame />, document.getElementById('content'));
 }

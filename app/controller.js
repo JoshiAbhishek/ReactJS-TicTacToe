@@ -4,6 +4,7 @@ var ReactDOM = require('react-dom');
 var Game = require('./game.js');
 var Components = require('./components.js');
 
+//Controller class for game
 class Controller {
     constructor() {
         this._gameModel;
@@ -30,6 +31,7 @@ class Controller {
         return this._canStartGame;
     }
 
+    //Initialize game model according to number of rows, the current player, and the next player
     init(numRows) {
         this._gameModel = new Game.TicTacToeGame(numRows, 2);
         this._gameModel.lastGameStarter = 0;
@@ -40,10 +42,13 @@ class Controller {
         update();
     }
 
+    //Add a player to the game
     addPlayer(name) {
+        //Functionality for a game with 2 players
         if (this._gameModel.maxPlayerTotal === 2) {
             var symbol;
 
+            //Set the player symbols
             if (this._gameModel.totalNumPlayers === 0) {
                 symbol = "X"
             }
@@ -123,6 +128,7 @@ class Controller {
         return this._gameModel.getPlayer(this._gameModel.nextPlayerNum).name;
     }
 
+    //Set the current player, the next player, and who started the last game
     startGame() {
         if ((this._gameModel.totalNumPlayers >= this._gameModel.minPlayerTotal) && this._gameModel.totalNumPlayers <= this._gameModel.maxPlayerTotal) {
             this._canStartGame = true;
@@ -144,16 +150,15 @@ class Controller {
         update();
     }
 
+    //Move to the corresponding board spot, according to row and column
     makeMove(row, col) {
         var playerNum = this._gameModel.currentPlayerNum;
 
+        //Check if the game is tied
         if ((this._gameModel.numSpotsTaken === this._gameModel.totalSpots) && this._gameModel.winner === undefined) {
             alert("All spots are taken. The game is tied.");
 
-            this._gameModel.addTies();
-        
-            //
-        
+            this._gameModel.addTies();        
         }
         else if ((this._gameModel.numSpotsTaken === this._gameModel.totalSpots) && this._gameModel.winner !== undefined) {
             alert("Unexpected error... quitting");
@@ -165,6 +170,7 @@ class Controller {
                 alert("Player " + this._gameModel.players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").");
                 console.log("Player " + this._gameModel.players[playerNum].name + " moved to spot " + " (" + row + ", " + col + ").");
 
+                //Check if the game has been won
                 if (this._gameModel.checkWin(playerNum, row, col)) {
                     this._gameModel.winner = playerNum;
 
@@ -172,6 +178,7 @@ class Controller {
                 
                     alert("Player " + this._gameModel.players[playerNum].name + " won!!");
                 }
+                //Set the current and next player
                 else {
                     if (playerNum == 0) {
                         this._gameModel.currentPlayerNum = 1;
@@ -181,8 +188,6 @@ class Controller {
                         this._gameModel.currentPlayerNum = 0;
                         this._gameModel.nextPlayerNum = 1;
                     }
-                
-                    //
                 }
             }
             else {
@@ -192,6 +197,7 @@ class Controller {
         
         update();
         
+        //Check if the game is tied
         if ((this._gameModel.numSpotsTaken === this._gameModel.totalSpots) && this._gameModel.winner === undefined) {
             alert("All spots are taken. The game is tied.");
 
@@ -203,6 +209,7 @@ class Controller {
         update();
     }
 
+    //Handler for the control buttons (New Game and Exit)
     handleControlButton(buttonID) {
         if(buttonID === "newGame") {
             this.newGame();
@@ -212,6 +219,7 @@ class Controller {
         }
     }
 
+    //Start a new game
     newGame() {
         alert("Resetting the board for a new game.");
 
@@ -221,6 +229,7 @@ class Controller {
         update();
     }
 
+    //Exit the game
     exit() {
         alert("Exiting the game.");
 
@@ -228,6 +237,7 @@ class Controller {
         update();
     }
 
+    //Quit functionality
     _quit() {        
         this._reset();
         
@@ -236,6 +246,7 @@ class Controller {
         this._initialized = false;
     }
 
+    //Reset functionality
     _reset() {
         this._gameModel.reset();
         this._tied = false;
@@ -243,6 +254,7 @@ class Controller {
 
 }
 
+//Update the game
 function update() {
     ReactDOM.render(<Components.FullGame />, document.getElementById('content'));
 }
