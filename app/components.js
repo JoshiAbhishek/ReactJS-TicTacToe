@@ -231,8 +231,17 @@ var ControlButton = React.createClass({
     },
 
     render: function () {
+        var isDisabled = true;
+        
+        if (Controller.tied === true || Controller.getWinner() !== undefined) {
+            isDisabled = false;
+        }
+        else {
+            isDisabled = true;
+        }
+        
         return (
-            <button onClick={ this.click } > { this.props.text } < /button>
+            <button disabled = {isDisabled} onClick={ this.click } > { this.props.text } < /button>
         );
     }
 });
@@ -251,20 +260,22 @@ var ControlButtons = React.createClass({
 var GamePage = React.createClass({
     render: function () {
         var buttons;
-
+        
+        /*
         if (Controller.tied === true || Controller.getWinner() !== undefined) {
             buttons = <ControlButtons />;
         }
         else {
             buttons = <div></div>;
         }
-
+        */
+        
         return (
             <div>
             <InfoBox />
             < PlayerBox />
             <GameBoard />
-            {buttons }
+            <ControlButtons />
         < /div>
             );
     }

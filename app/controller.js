@@ -231,7 +231,7 @@ class Controller {
     _quit() {        
         this._reset();
         
-        this._gameModel = undefined;
+        //this._gameModel = undefined;
         this._canStartGame = false;
         this._initialized = false;
     }
