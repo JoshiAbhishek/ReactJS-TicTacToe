@@ -1,11 +1,84 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway|Lato|Montserrat);
+
 body {
+    font-family: 'Lato', sans-serif;
     text-align: center !important;
-    
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 table {
     margin-left: auto;
     margin-right: auto;
+}
+
+h1 {
+    color: white;
+    margin-bottom: 1em;
+    font-family: 'Raleway', sans-serif;
+}
+
+.jumbotron {
+    padding: 0em;
+    background-color: transparent;
+    padding-top: 1em;
+    padding-bottom: 2em;
+    width: 100%;
+}
+
+.infoBox {
+    background-color: rgba(255,255,255,.5);
+    color: darkblue;
+}
+
+.playerBox {
+    color: white;
+    background-color: rgba(0,0,0,.5);
+}
+
+.playerName {
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.SetBoardForm input[type=number], .mainForm input[type=text] {
+  color: darkred;
+  background-color: white !important;
+  border-color: darkblue;
+  border-width: .25em;
+  border-style: solid;
+  border-radius: .5em;
+  margin: .25em;
+  padding: .25em;
+  font-size: 1.5em;
+  
+  font-weight: bold;
+}
+
+.SetBoardForm input[type=submit], .mainForm input[type=submit] {
+  color: white;
+  background-color: darkred !important;
+  border-color: darkred;
+  border-width: .25em;
+  border-style: solid;
+  border-radius: .5em;
+  margin: .25em;
+  padding: .25em;
+  font-size: 1.5em;
+  
+  font-weight: bold;
+}
+
+.controlButton {
+    margin-top: 5em;
+    margin-bottom: 5em;    
+}
+
+.playerBoxes {
+    margin-bottom: 5em;
 }
 
 /** all buttons are the same size **/

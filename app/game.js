@@ -1,5 +1,6 @@
 'use strict';
 
+//Player class represeting one game player's name, number, symbol, and stats
 class Player {
     constructor(name, playerNum, symbol) {
         this._name = name;
@@ -59,6 +60,7 @@ class Player {
     }
 }
 
+//Represents a board spot with row, column, and occupying player values
 class BoardSpot {
     constructor(player, row, col) {
         this._player = player;
@@ -95,6 +97,7 @@ class BoardSpot {
     }
 }
 
+//The game board, constructed by the number of rows for board spots, and the total number of players
 class GameBoard {
     constructor(numRows, totalNumPlayers) {
         this._board = [];
@@ -118,6 +121,7 @@ class GameBoard {
         return this._totalSpots;
     }
 
+    //Reset the board's board spots and their players
     resetBoard() {
         for (var i = 0; i < this._numRows; i++) {
             for (var j = 0; j < this._numRows; j++) {
@@ -136,6 +140,7 @@ class GameBoard {
         return this._board[row][col]
     }
 
+    //Check if a row has been fully completed by a player
     rowCompletion(passedPlayer, row, col) {
         //var j = this._numRows - 1;
         for (var i = 0; i < this._numRows; i++) {
@@ -156,6 +161,7 @@ class GameBoard {
         return true;
     }
 
+    //Check if a column has been fully completed by a player
     colCompletion(passedPlayer, row, col) {
         //var j = this._numRows - 1;
         for (var i = 0; i < this._numRows; i++) {
@@ -176,10 +182,12 @@ class GameBoard {
         return true;
     }
 
+    //Check if a diagonal has been fully completed by a player
     diagonalCompletion(passedPlayer) {
         return (this.diagonalComplU2D(passedPlayer) || this.diagonalComplD2U(passedPlayer));
     }
     
+    //Check if the first diagonal has been completed
     diagonalComplU2D(passedPlayer) {
         for (var i = 0; i < this._numRows; i++) {
             if (this._board[i][i].player === undefined || this._board[i][i].player.playerNum !== passedPlayer.playerNum) {
@@ -189,7 +197,7 @@ class GameBoard {
         
         return true;
     }
-    
+    //Check if the second diagonal has been completed
     diagonalComplD2U(passedPlayer) {
         var k = this._numRows - 1;
         for (var j = 0; j < this._numRows; j++) {
@@ -204,6 +212,7 @@ class GameBoard {
     }
 }
 
+//The tic tac toe game with the game board, stats, and players
 class TicTacToeGame {
     constructor(totalRows, maxPlayerTotal) {
         this._players = [];
@@ -327,6 +336,7 @@ class TicTacToeGame {
         return this._players;
     }
 
+    //Add a new player to the game by name and symbol
     addPlayer(name, symbol) {
         if (this._totalNumPlayers === this._maxPlayerTotal) {
 
@@ -345,6 +355,7 @@ class TicTacToeGame {
         return this._players[playerNum];
     }
 
+    //Make a move on the game board
     makeMove(playerNum, row, col) {
         var boardSpot = this._board.getBoardSpot(row, col);
 
@@ -360,6 +371,7 @@ class TicTacToeGame {
 
     }
 
+    //Check if a player has completed a row, column, or diagonal
     checkWin(playerNum, row, col) {
         var player = this._players[playerNum];
 
@@ -378,6 +390,7 @@ class TicTacToeGame {
         this._players[playerNum].ties++;
     }
 
+    //Add a win to the given player, and losses to the other players
     addWinAndLosses(playerNum) {
         this.addPlayerWin(playerNum);
 
@@ -390,6 +403,7 @@ class TicTacToeGame {
         this._numGames++;
     }
 
+    //Add a tie to all players
     addTies() {
         for (var i = 0; i < this._players.length; i++) {
             this._players[i].ties++;
@@ -402,6 +416,7 @@ class TicTacToeGame {
         return this._board.getBoardSpot(row, col);
     }
 
+    //Reset the game
     reset() {
         this._winner = undefined;
         this._numSpotsTaken = 0;
