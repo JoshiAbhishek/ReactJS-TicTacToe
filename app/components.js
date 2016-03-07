@@ -13,11 +13,6 @@ var buttonStyle = {
     width: '100px'
 };
 
-//Styles for the info box
-var infoBoxStyle = {
-    color: "blue"
-};
-
 //Page for setting the board's number of rows and columns
 var SetBoardPage = React.createClass({
     getInitialState: function () {
@@ -110,8 +105,8 @@ var PlayerBox = React.createClass({
 
         for (var i = 0; i < players.length; i++) {
             playerBoxes.push(
-                <div>
-                <h2>{ players[i].name } < /h2>
+                <div className="col-md-6 playerBox">
+                <h2 className="playerName">{ players[i].name } < /h2>
                 < h3 > Player Symbol: { players[i].symbol } < /h3>
                 < h3 > Player Number: { players[i].playerNum } < /h3>
                 < h3 > Player Wins: { players[i].wins } < /h3>
@@ -122,8 +117,10 @@ var PlayerBox = React.createClass({
         }
 
         return (
-            <div>
+            <div className="jumbotron playerBoxes" >
+            <div className="row" >
             { playerBoxes }
+            < /div>
             < /div>
             );
     }
@@ -177,14 +174,19 @@ var BoardSpot = React.createClass({
 var InfoBox = React.createClass({
     render: function () {
         return (
-            <div style={ infoBoxStyle } >
-            <h3>Total Games: { Controller.getTotalGames() } </h3>
-            < h3 > Last Game Starter: { Controller.getLastGameStarter() } </h3>
-            < h3 > Current Player: { Controller.getCurrentPlayerName() } </h3>
-            < h3 > Next Player: { Controller.getNextPlayerName() } </h3>
-            < h3 > Total Players: { Controller.getTotalNumPlayers() } </h3>
-            < h3 > Spots Taken: { Controller.getNumSpotsTaken() } </h3>
-            < h3 > Total Spots: { Controller.getTotalSpots() } </h3>
+            <div className="jumbotron" >
+                <div className="row infoBox" >
+                    <div className="col-md-6" >
+                        <h3>Total Games: { Controller.getTotalGames() } </h3>
+                        < h3 > Last Game Starter: { Controller.getLastGameStarter() } </h3>
+                        < h3 > Total Players: { Controller.getTotalNumPlayers() } </h3>
+                    < /div>
+                    < div className= "col-md-6" >
+                        < h3 > Current Player: { Controller.getCurrentPlayerName() } </h3>
+                        < h3 > Spots Taken: { Controller.getNumSpotsTaken() } </h3>
+                        < h3 > Total Spots: { Controller.getTotalSpots() } </h3>
+                    < /div>
+                < /div>
             < /div>
         );
     }
@@ -247,7 +249,7 @@ var ControlButton = React.createClass({
         }
         
         return (
-            <button disabled = {isDisabled} onClick={ this.click } > { this.props.text } < /button>
+            <button className="controlButton" disabled = {isDisabled} onClick={ this.click } > { this.props.text } < /button>
         );
     }
 });
